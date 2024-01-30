@@ -45,7 +45,7 @@ class product(models.Model):
     price=models.IntegerField()
     company=models.CharField(max_length=20)
     type=models.CharField(max_length=10)
-    quantity=models.IntegerField()
+    # quantity=models.IntegerField()
 
 
     def __str__(self):

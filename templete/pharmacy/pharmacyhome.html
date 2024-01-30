@@ -34,10 +34,7 @@
 
 <body>
   <div class="site-wrap">
-
-
     <div class="site-navbar py-2" STYLE="background-color:#5F9EA0;">
-
       <div class="search-wrap">
         <div class="container">
           <a href="#" class="search-close js-search-close"><span class="icon-close2"></span></a>
@@ -51,9 +48,8 @@
         <div class="d-flex align-items-center justify-content-between">
           <div class="logo">
             <div class="site-logo">
-<!--              <a href="index.html" class="js-logo-clone">Pharma</a>-->
-<!--             <h2><span class="blue"></span>PHA<span class="blue"></span> <span class="yellow">RMACY</pan></h2>-->
-              <h2><img src="https://assets-global.website-files.com/6364b3839895890bb2c275a4/6364d6eaf534664ff26b5aa1_Nav-logo.svg"></h2>
+           
+  <h2><img src="https://assets-global.website-files.com/6364b3839895890bb2c275a4/6364d6eaf534664ff26b5aa1_Nav-logo.svg"></h2>
             </div>
           </div>
           <div class="main-nav d-none d-lg-block">
@@ -62,26 +58,6 @@
                 <li class="active"><a href="index.html">Home</a></li>
                 <li><a href="viewproduct">View Product</a></li>
 
-<!--                <li class="has-children">-->
-<!--                  <a href="#">Dropdown</a>-->
-<!--                  <ul class="dropdown">-->
-<!--                    <li><a href="#">Supplements</a></li>-->
-<!--                    <li class="has-children">-->
-<!--                      <a href="#">Vitamins</a>-->
-<!--                      <ul class="dropdown">-->
-<!--                        <li><a href="#">Supplements</a></li>-->
-<!--                        <li><a href="#">Vitamins</a></li>-->
-<!--                        <li><a href="#">Diet &amp; Nutrition</a></li>-->
-<!--                        <li><a href="#">Tea &amp; Coffee</a></li>-->
-<!--                      </ul>-->
-<!--                    </li>-->
-<!--                    <li><a href="#">Diet &amp; Nutrition</a></li>-->
-<!--                    <li><a href="#">Tea &amp; Coffee</a></li>-->
-
-<!--                  </ul>-->
-<!--                </li>-->
-<!--                <li><a href="about.html">About</a></li>-->
-<!--                <li><a href="contact.html">Contact</a></li>-->
 
 
 
@@ -91,10 +67,7 @@
                   <li ><a href="{% url 'editpharmacyprofile'  %}">Edit profile</a></li>
                   <li ><a href="phar_history">history</a></li>
 
-<!--                  <ul class="dropdown">-->
-<!--                    <li><a href="profile">Edit profile</a></li>-->
-<!--                    <li><a href="changepsw">change password</a></li>-->
-<!--                    <li><a href="logout">logout</a></li>-->
+
                   </ul>
                 </li>
 
@@ -102,54 +75,6 @@
             </nav>
           </div>
 
-<!--          add producr modal-->
-
-
-<!--<div class="modal fade" id="Modal" tabindex="-1" aria-hidden="true">-->
-<!--  <div class="modal-dialog modal-dialog-centered">-->
-<!--    <div class="modal-content">-->
-<!--        &lt;!&ndash; Login Form &ndash;&gt;-->
-<!--        <form action="addmedicine" method="post">-->
-<!--          {% csrf_token %}-->
-<!--          <div class="modal-header">-->
-<!--            <h5 class="modal-title">Add Medicine Form</h5>-->
-<!--            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--          </div>-->
-<!--          <div class="modal-body">-->
-<!--            <div class="mb-3">-->
-<!--                <label for="Username">Medicine<span class="text-danger"></span></label>-->
-<!--                <input type="text" name="medicinename" class="form-control" id="Username" placeholder="Enter Medicine">-->
-<!--            </div>-->
-
-<!--               <div class="modal-body">-->
-<!--            <div class="mb-3">-->
-<!--                <label for="Username">Medicine Type<span class="text-danger"></span></label>-->
-<!--                <input type="text" name="medicinetype" class="form-control" id="Username" placeholder="Enter Medicine Type">-->
-<!--            </div>-->
-
-<!--            <div class="modal-body">-->
-<!--            <div class="mb-3">-->
-<!--                <label for="Username">Medicine Stock<span class="text-danger"></span></label>-->
-<!--                <input type="number" name="medicinestock" class="form-control" id="Username" placeholder="Enter Medicine Stock">-->
-<!--            </div>-->
-
-<!--                 <div class="modal-body">-->
-<!--            <div class="mb-3">-->
-<!--                <label for="Username">Unit Price<span class="text-danger"></span></label>-->
-<!--                <input type="text" name="medicineprice" class="form-control" id="Username" placeholder="Enter Medicine Price">-->
-<!--            </div>-->
-
-<!--          </div>-->
-<!--          <div class="modal-footer pt-4">-->
-<!--            <button type="submit" class="btn btn-dark mx-auto w-50">Add Medicine</button>-->
-<!--          </div>-->
-<!--      </form>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-
-
-<!--          add modal-->
 
 
 
@@ -157,13 +82,10 @@
 
 
            <div class="icons">
-<!--             <a href="#" class="icons-btn d-inline-block js-search-open"><span class="icon-search"></span></a>-->
-<!--            <a href="logout" class="fas fa-sign-out-alt">-->
-<!--              <span class="icon-shopping-bag"></span>-->
-              <li>
-              <a href="logout"><i class="fa fa-sign-out"></i> <span>LOGOUT</span> </a>
-              </li>
-<!--              <span class="number">2</span>-->
+
+              
+              <a href="logout"><i class="fa fa-sign-out"></i> <button class="btn btn-success ">logout</button></a>
+              
             </a>
             <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none"><span
                 class="icon-menu"></span></a>
@@ -178,7 +100,7 @@
           <div class="col-lg-7 mx-auto order-lg-2 align-self-center">
             <div class="site-block-cover-content text-center">
               <h2 class="sub-title">Effective Medicine, New Medicine Everyday</h2>
-              <h1>DAYA MEDICALS CALICIT</h1>
+              <h1>{{data3.username}}</h1>
               <p>
 <!--                <a href="#" class="btn btn-primary px-5 py-3">ADD PRODUCTS</a>-->
 <!--              </p>-->
@@ -480,7 +402,7 @@
                <div class="modal-body">
             <div class="mb-3">
                 <label for="price">Medicine price<span class="text-danger"></span></label>
-                <input type="number" name="price" class="form-control"  placeholder="medisine price" required="">
+                <input type="number" name="price" class="form-control"  placeholder="medicine price" required="">
             </div>
                </div>
             <div class="modal-body">
@@ -493,7 +415,7 @@
           <div class="modal-body">
             <div class="mb-3">
                 <label for="type">Type<span class="text-danger"></span></label>
-                <input type="text" name="type" class="form-control"  placeholder="medisine type" required="">
+                <input type="text" name="type" class="form-control"  placeholder="medicine type" required="">
             </div>
                </div>
           <div class="modal-body">
