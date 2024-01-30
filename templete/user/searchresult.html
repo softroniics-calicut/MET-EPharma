@@ -1,0 +1,330 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Bootstrap 4 Navbar with Icon</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Poppins Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap">
+    <title>Title</title>
+</head>
+
+<style xmlns="http://www.w3.org/1999/html">
+    .product-container{
+  display:flex;
+  flex-wrap:wrap;
+   width:100%;
+  justify-content:center
+}
+.product-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+    background-color: white;
+
+  padding-bottom:1%
+
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  margin-top: 17px;
+}
+
+.product-name {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.product-description {
+  font-size: 0.875rem;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.product-price {
+  font-size: 1.125rem;
+  font-weight: bold;
+  margin: 10px 0;
+  color: orange;
+}
+
+.add-to-cart-button {
+  padding: 10px 20px;
+  background-color: orange;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.add-to-cart-button:hover {
+  background-color: darkorange;
+}
+
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+ }
+.original-price {
+  text-decoration: line-through;
+  color: lightgray;
+  font-size: 0.875rem;
+}
+
+.discount-price {
+  color: orange;
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+      * {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .navbar {
+      background-color: #30475e;
+    }
+
+    .navbar-brand {
+      color: #ffffff;
+      font-weight: bold;
+    }
+
+    .navbar-nav .nav-item .nav-link {
+      color: #fff;
+      position: relative;
+      transition: 0.3s;
+      font-weight: 400;
+      color:#fff;
+    }
+
+    .navbar-nav .nav-item .nav-link::before {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #f8b739;
+      transition: 0.3s;
+      color:#fff;
+    }
+
+    .navbar-nav .nav-item .nav-link:hover::before {
+      width: 100%;
+      color: #fff;
+    }
+    .search {
+	width: 53px;
+	height: 51px;
+	transform: 0.5s;
+	background: #fff;
+	overflow: hidden;
+	position: relative;
+	border-radius: 60px;
+	box-shadow: 0 0 0 0 5px #7532d4;
+}
+
+.search.active {
+	width: 308px;
+}
+
+.search .icon {
+	top: 0;
+	left: 0;
+	width: 40px;
+	height: 60px;
+	display: flex;
+	z-index: 1000;
+	cursor: pointer;
+	position: absolute;
+	background: #fff;
+	border-radius: 60px;
+	align-items: center;
+	justify-content: center;
+}
+
+.search .icon:before {
+	content: "";
+	width: 15px;
+	height: 15px;
+	position: absolute;
+	border-radius: 50%;
+	border: 3px solid #8338ec;
+	transform: translate(-4px, -4px);
+}
+
+.search .icon:after {
+	content: "";
+	width: 3px;
+	height: 12px;
+	position: absolute;
+	background: #8338ec;
+	transform: translate(6px, 6px) rotate(315deg);
+}
+
+.search .input {
+	left: 60px;
+	width: 300px;
+	height: 60px;
+	display: flex;
+	position: relative;
+	align-items: center;
+	justify-content: center;
+}
+
+.search .input input {
+	top: 0;
+	width: 100%;
+	height: 100%;
+	border: none;
+	outline: none;
+	font-size: 18px;
+	padding: 10px 0;
+	position: absolute;
+}
+.clear {
+	top: 50%;
+	right: 15px;
+	width: 15px;
+	height: 15px;
+	display: flex;
+	cursor: pointer;
+	background: #ff0;
+	position: relative;
+	align-items: center;
+	justify-content: center;
+	transform: translateY(-50%);
+}
+
+.clear:before {
+	width: 1px;
+	height: 15px;
+	content: "";
+	position: absolute;
+	background: #999;
+	transform: rotate(45deg);
+}
+
+.clear:after {
+	width: 1px;
+	height: 15px;
+	content: "";
+	position: absolute;
+	background: #999;
+	transform: rotate(315deg);
+}
+
+
+</style>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark">
+  <div class="container">
+      <img  onclick="history.back()" style="height:2rem; margin-top:40px; margin-left:-80px;"  src="{% static 'images/back.png' %}">
+
+    <!-- Brand/logo -->
+    <a class="navbar-brand" href="#">
+      <img src="https://assets-global.website-files.com/6364b3839895890bb2c275a4/6364d6eaf534664ff26b5aa1_Nav-logo.svg" loading="lazy" alt="Nav Bar Brand Icon">
+
+    </a>
+
+    <!-- Toggler/collapsibe Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div style="margin-left:260px;">
+ <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" onclick="history.back()">HOME</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">STORE</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'view_cart' %}">MY CART</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'history'  %}">HISTORY</a>
+        </li>
+      </ul>
+      </div>
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav ml-auto">
+<!--        <li>-->
+<!--            <div class="search">-->
+<!--		<div class="icon"></div>-->
+<!--          <div class="input">-->
+<!--			<input type="text"  name="search" placeholder="Search..." id="mysearch">-->
+<!--		</div>-->
+
+<!--		<span class="clear" onclick="document.getElementById('mysearch').value = ''">x</span>-->
+<!--	</div>-->
+<!--        </li>-->
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link" href="#">About</a>-->
+<!--        </li>-->
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link" href="#">Services</a>-->
+<!--        </li>-->
+        <li class="nav-item">
+          <a class="nav-link" href="logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<h3>search result:</h3>
+
+<div class="product-container">
+{% if products %}
+{% for i in products %}
+<div class="product-card">
+  <a href="{% url 'book' id=i.id %}"><img  src="{{i.image.url }}" alt="Product Name" class="product-image"></a>
+  <h3 class="product-name">{{i.medicinename}}</h3>
+<!--  <p class="product-description">Product Description</p>-->
+  <div class="product-price">₹{{i.price}}</div>
+  <a href="{% url 'cart' id=i.id %}"><button class="add-to-cart-button">Add to Cart</button></a>
+</div>
+{% endfor %}
+{% else %}
+    <p>no products available</p>
+{% endif %}
+
+
+
+
+
+
+
+</div>
+<script>
+  const icon = document.querySelector(".icon");
+const search = document.querySelector(".search");
+
+icon.onclick = function () {
+	search.classList.toggle("active");
+};
+
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+{% load static %}
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        />
+        <link rel="stylesheet" href="style.css" />
+        <title>Table</title>
+    </head>
+    <style>
+		h1 {
+    text-align: center;
+    font-weight: 300;
+}
+
+.tableContainer {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.tableMain {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    display: table;
+    width: 100%;
+    margin-top:4rem;
+}
+
+.tableRow {
+    box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+}
+
+td {
+    text-align: center;
+    font-size: 17px;
+}
+
+th {
+    background-color: #202932;
+    color: #fff;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+td,
+th {
+    padding: 20px;
+}
+
+.icon {
+    font-size: 12px;
+    text-decoration: none;
+    color: rgb(26, 156, 139);
+    padding: 5px;
+}
+
+.icon:hover {
+    color: rgb(128, 9, 9);
+}
+
+.tableContainer .wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.tableContainer .button a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.tableContainer .button:hover {
+    background-color: rgb(40, 167, 150);
+    transition: 0.5s;
+}
+
+.tableContainer .searchField {
+    background-color: rgb(235, 241, 241);
+    border: none;
+    padding: 12px 10px;
+    width: 300px;
+    appearance: none;
+    border-radius: 2px;
+    font-size: 14px;
+    outline: none;
+}
+
+.tableContainer .searchButton {
+    background-color: rgb(235, 241, 241);
+    padding: 12px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.confirm{
+margin-left:38rem;
+margin-top: -10rem;
+}
+.man{
+background-color:rgb(54, 185, 168);
+color: white;
+border: none;
+padding: 10px 25px;
+font-size: 20px;
+font-weight: 400;
+border-radius: 2px;
+}
+
+tableContainer .searchButton:hover {
+   color: rgb(26, 156, 139);
+}
+	</style>
+    <body>
+        <h1>Medicine Details</h1>
+        <div class="tableContainer">
+
+
+
+
+                    <table class="tableMain">
+                        <tr class="tableRow">
+                                    <img  onclick="history.back()" style="height:3rem; margin-top:-45px; margin-left:-7rem;" src="{% static 'images/previous.png' %}">
+                            <th>Medicine</th>
+                            <th>price</th>
+                            <th>Company</th>
+                            <th>type</th>
+                            <th>Pharmacy</th>
+                            <th>Location</th>
+                            <th>Contact</th>
+
+
+                            <th></th>
+                        </tr>
+
+                        <tr class="tableRow">
+                            <td>{{medicine.medicinename}}</td>
+                            <td>{{medicine.price}}</td>
+                            <td>{{medicine.company}}</td>
+                            <td>{{medicine.type}}</td>
+                            <td>{{medicine.pharmacyid.name}}</td>
+                            <td>{{medicine.pharmacyid.address}}</td>
+                            <td>{{medicine.pharmacyid.phone_no}}</td>
+
+                            <td class="select">
+                            </td>
+
+                        </tr>
+
+
+                    </table>
+                    <div class="" style="display: flex;  justify-content: space-around; align-items: center; width: 80%; margin: auto;">
+                        <div>
+                            <img class="image" src="{{medicine.image.url }}" style="width: 40%; height: 40%; object-fit: cover;">
+                            </div>
+                    <form action="{% url 'payment' id=medicine.id %}" method="post" style="display: flex;gap: 20px;align-items: center;">
+                        {% csrf_token %}
+                        <input type="number" name="quantity" placeholder="quantity">
+                        <input type="submit" class="man" value="Confirm Booking">
+                    </form>
+                    </div>
+                    
+
+        </div>
+
+    </body>
+</html>
