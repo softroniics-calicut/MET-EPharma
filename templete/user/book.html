@@ -126,7 +126,7 @@ tableContainer .searchButton:hover {
 
                     <table class="tableMain">
                         <tr class="tableRow">
-                                    <img  onclick="history.back()" style="height:3rem; margin-top:-45px; margin-left:-7rem;" src="{% static 'images/previous.png' %}">
+                                    <a href="{% url 'store' %}"><img style="height:3rem; margin-top:-45px; margin-left:-7rem;" src="{% static 'images/previous.png' %}"></a>
                             <th>Medicine</th>
                             <th>price</th>
                             <th>Company</th>
@@ -147,7 +147,7 @@ tableContainer .searchButton:hover {
                             <td>{{medicine.pharmacyid.name}}</td>
                             <td>{{medicine.pharmacyid.address}}</td>
                             <td>{{medicine.pharmacyid.phone_no}}</td>
-
+                            
                             <td class="select">
                             </td>
 
@@ -158,12 +158,24 @@ tableContainer .searchButton:hover {
                     <div class="" style="display: flex;  justify-content: space-around; align-items: center; width: 80%; margin: auto;">
                         <div>
                             <img class="image" src="{{medicine.image.url }}" style="width: 40%; height: 40%; object-fit: cover;">
+                            <div style="color: red; font-size: 25px;">
+                            {% if message %}
+                                !{{ message }}
+                            {% endif %}
                             </div>
-                    <form action="{% url 'payment' id=medicine.id %}" method="post" style="display: flex;gap: 20px;align-items: center;">
-                        {% csrf_token %}
-                        <input type="number" name="quantity" placeholder="quantity">
-                        <input type="submit" class="man" value="Confirm Booking">
-                    </form>
+
+                            </div>
+                            <form action="{% url 'cart' id=medicine.id %}" method="post" style="display: flex; gap: 20px; align-items: center;">
+                                {% csrf_token %}
+                                <select name="quantity" id="quantity">
+                                    {% for i in quantity_range %}
+                                        <option value="{{ i }}">{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                                <input type="submit" class="man" value="Add to Cart">
+                            </form>
+                            
+                            
                     </div>
                     
 

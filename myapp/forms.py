@@ -11,7 +11,7 @@ class editprofileform(forms.ModelForm):
 class editproductform(forms.ModelForm):
     class Meta:
         model=product
-        fields=['medicinename','price','company','type','image']
+        fields=['medicinename','price','quantity','company','type','image']
 
 class pharmacyprofileform(forms.ModelForm):
     class Meta:

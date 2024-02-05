@@ -191,9 +191,10 @@
   
       <tr>
         <th>Date</th>
-        <th>Name</th>
+        <th>Buyer</th>
         <th>Medicine Name</th>
-        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total Amount</th>
        
       </tr>
     </thead>
@@ -203,7 +204,8 @@
           <td>{{i.date}}</td>
           <td>{{i.name}}</td>
           <td>{{i.medicinename.medicinename}}</td>
-          <td>{{i.medicinename.price}}</td>
+          <td>{{i.quantity}}</td>
+          <td>{{i.total_amount}}</td>
     
         </tr>
        {% endfor %}

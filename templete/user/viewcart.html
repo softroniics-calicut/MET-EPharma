@@ -32,7 +32,7 @@ table {
   border-collapse: collapse;
   border-radius: 5px;
   overflow: hidden;
-  margin-top:7rem;
+  margin-top:2rem;
 }
 
 th {
@@ -210,6 +210,7 @@ a {
         <th>medicine Name</th>
         <th>image</th>
         <th>price</th>
+        <th>quantity</th>
         <th>type</th>
         <th>company</th>
         <th>action</th>
@@ -222,13 +223,17 @@ a {
         <td>{{i.medicineid.medicinename}}</td>
         <td><img  style="height: 70px;" src="{{i.medicineid.image.url }}"></td>
         <td>{{i.medicineid.price}}</td>
+        <td>{{i.quantity}}</td>
         <td>{{i.medicineid.type}}</td>
         <td>{{i.medicineid.company}}</td>
          <td class="select">
-        <a class="icon" href="{% url 'book' id=i.medicineid.id %}"><b>confirm booking</b></i></a>&nbsp &nbsp &nbsp &nbsp &nbsp
         <a  href="{% url 'cartdelete' id=i.medicineid.id %}" data-toggle="tooltip" data-placement="bottom" title="Delete"><img class="b" width="30" height="30" src="https://img.icons8.com/color/30/delete-forever.png" alt="delete-forever"/></a>
         </td>
     </tr>
     {% endfor %}
+
     </tbody>
 </table>
+{% if view %}
+<a href="{% url 'payment'  %}"><button class="btn btn-success mt-4 m-auto w-25">Confirm Booking</button></a>
+{% endif %}

@@ -3,19 +3,19 @@ from .models import Pharmacy
 from .models import user,product,booking,cart,Login
 from django.shortcuts import HttpResponse
 from django.shortcuts import reverse
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate,login
 from .forms import editprofileform
 from .forms import pharmacyprofileform
 from .forms import editproductform
+from django.views.decorators.cache import cache_control
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from django.contrib.auth import update_session_auth_hash
+
+# from django.contrib.auth import update_session_auth_hash
 
 # Create your views here.
-def home(request):
-        return render(request,'user/userhome.html')
-def store(request):
-    data = product.objects.all()
-    return render(request, 'user/store.html', {'data': data})
+
+
 def registration (request):
     return render(request,'user/signuser.html')
 def pharmacyreg(request):
@@ -52,9 +52,9 @@ def pharmacyregform(request):
         password=request.POST['password']
         if Login.objects.filter(username=name).exists():
                  return render(request,'pharmacy/signpharmacy.html', {'message': "Username already exists"})
-        if user.objects.filter(email=email).exists():
+        if Pharmacy.objects.filter(email=email).exists():
                  return render(request,'pharmacy/signpharmacy.html', {'message': "Email already exists"})
-        if user.objects.filter(phone_no=phone_no).exists():
+        if Pharmacy.objects.filter(phone_no=phone_no).exists():
              return render(request,'pharmacy/signpharmacy.html', {'message': "Phone number already exists"})
         login = Login.objects.create(username=name, password=password, type="pharmacy")
         login.save()
@@ -73,6 +73,10 @@ def log(request):
         username=request.POST['username']
         password=request.POST['password']
         try:
+            admin_user = authenticate(request, username=username, password=password)
+            if admin_user is not None and admin_user.is_staff:
+                login(request, admin_user)
+                return redirect(reverse('admin:index'))
             data=Login.objects.get(username=username,password=password)
             if data.type == "user" and data.status=='APPROVED' :
                 request.session['id']=data.id
@@ -82,13 +86,13 @@ def log(request):
                 return redirect(pharpage)
             else:
                 context = {
-                    'message': '  you can waite the admin is approval'
+                    'message': ' wait for admins approval'
                 }
                 return render(request,'lognew.html',context)
 
         except Exception:
                          context = {
-                             'message2': 'invalid password and username. Find your account and login.'
+                             'message2': 'invalid credentials'
                          }
                          return render(request,'lognew.html',context)
     else:
@@ -109,15 +113,17 @@ def logout(request):
 
 ####################################################        PHARMACY         ##########################################
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def pharpage(request):
     if 'id' in request.session:
         userid = request.session['id']
         use1 = Login.objects.get(id=userid)
         return render(request, 'pharmacy/pharmacyhome.html',{'data3': use1})
     else:
-        return HttpResponse("invalid")
+        return redirect(log)
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def addproduct(request):
     if 'id' in request.session:
         data1=request.session['id']
@@ -125,28 +131,54 @@ def addproduct(request):
         userdata=Pharmacy.objects.get(loginid=data)
         image=request.FILES['image']
         medicinename=request.POST['medicinename']
+        stock = request.POST['stock']
         price=request.POST['price']
         company=request.POST['company']
         type=request.POST['type']
-        data=product.objects.create(pharmacyid=userdata,image=image,medicinename=medicinename,price=price,company=company,type=type)
+        data=product.objects.create(
+            pharmacyid=userdata,
+            image=image,
+            medicinename=medicinename,
+            quantity = stock,
+            price=price,
+            company=company,
+            type=type
+            )
         data.save()
         return redirect(viewproduct)
     else:
          return redirect(log)
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def viewproduct(request):
     if 'id' in request.session:
         data1=request.session['id']
         logindata=Login.objects.get(id=data1)
         userdata=Pharmacy.objects.get(loginid=logindata)
         data=product.objects.filter(pharmacyid=userdata)
-        return render(request,'pharmacy/viewproduct.html',{'data':data})
+        items_per_page = 5
+        # Use Paginator to paginate the products
+        paginator = Paginator(data, items_per_page)
+        page = request.GET.get('page', 1)
+
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver the first page
+            products = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver the last page of results
+            products = paginator.page(paginator.num_pages)
+        return render(request,'pharmacy/viewproduct.html',{'products':products})
     else:
         return redirect(log)
 
-
-
+def searchproduct(request):
+    if request.method=='GET':
+        result=request.GET.get('search')
+        if result:
+            products = product.objects.all().filter(medicinename__icontains=result)
+            return render(request,'pharmacy/viewproduct.html',{'products':products})
 
 
 
@@ -198,6 +230,7 @@ def editpharmacyprofile(request):
         return redirect(log)
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def phar_history(request):
     data5=booking.objects.all()
     return render(request,'pharmacy/history.html',{'result':data5})
@@ -206,20 +239,18 @@ def phar_history(request):
 
 ###################################################       USER        ###########################################################
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def userpage(request):
     if 'id' in request.session:
         userid = request.session['id']
         use1=Login.objects.get(id=userid)
         return render(request, 'user/userhome.html', {'data2': use1})
     else:
-        return HttpResponse('invalid')
+        return redirect(log)
 
 
 def changepsw(request):
     return render(request,'user/changepsw.html')
-
-
-
 
 
 def changepassword(request):
@@ -270,12 +301,39 @@ def editprofile(request):
     else:
         return redirect(log)
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def home(request):
+        return render(request,'user/userhome.html')
 
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def store(request):
+    data = product.objects.all()
+    items_per_page = 9
+
+    # Use Paginator to paginate the products
+    paginator = Paginator(data, items_per_page)
+    page = request.GET.get('page', 1)
+
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver the first page
+        products = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver the last page of results
+        products = paginator.page(paginator.num_pages)
+    return render(request, 'user/store.html', {'products':products})
 
 def book(request,id):
     if 'id' in request.session:
-        data7=product.objects.get(id=id)
-        return render(request,'user/book.html',{'medicine':data7})
+        data=product.objects.get(id=id)
+        quantity_range = range(1, 11)
+        context = {
+            'quantity_range':quantity_range,
+            'medicine':data
+        }
+        return render(request,'user/book.html', context)
 
 
 
@@ -294,12 +352,23 @@ def Add_cart (request,id):
         user2=Login.objects.get(id=useid)
         userdata=user.objects.get(loginid=user2)
         medicine=product.objects.get(id=id)
-        if cart.objects.filter(medicineid=medicine,userid=userdata).exists():
+        # Check if the requested quantity is greater than the available quantity
+        requested_quantity = int(request.POST['quantity'])
+        if requested_quantity > medicine.quantity:
+            context = {
+                'message': "Out Of Stock",
+                'medicine': medicine
+            }
+            return render(request, 'user/book.html', context)
+
+        # Check if the medicine is already in the cart
+        if cart.objects.filter(medicineid=medicine, userid=userdata).exists():
             return redirect(alreadycart)
         else:
-            data6 = cart.objects.create(userid=userdata,medicineid=medicine)
-            data6.save()
-            data = cart.objects.filter(userid=userdata)
+            # Add the medicine to the cart
+            data = cart.objects.create(userid=userdata, medicineid=medicine, quantity=requested_quantity)
+            data.save()
+
             return redirect(view_cart)
     else:
         return redirect(log)
@@ -326,6 +395,7 @@ def history (request):
         user1=Login.objects.get(id=useid)
         userdata=user.objects.get(loginid=user1)
         history=booking.objects.filter(name=userdata)
+        print(history)
         return render(request, 'user/history.html', {'hist': history})
     else:
         return redirect(log)
@@ -340,28 +410,59 @@ def view_cart(request):
         userdata = user.objects.get(loginid=use2)
         view=cart.objects.filter(userid=userdata)
         return render(request,'user/viewcart.html',{'view':view})
-def paymentt(request,id):
+def payment(request):
     if 'id' in request.session:
         userid=request.session['id']
         user1 =Login.objects.get(id=userid)
         userdata=user.objects.get(loginid=user1)
-        currentmedicine=product.objects.get(id=id)
-        print(currentmedicine.price)
-        if request.method == "POST":
-            quantity = int(request.POST['quantity'])
-            total_amount = quantity * currentmedicine.price
-            data=booking.objects.create(name=userdata,medicinename=currentmedicine, total_amount=total_amount,quantity=quantity)
-            data.save()
-            print(data)
-            return render(request,'user/payment.html',{'data':data})
+        cart_items = cart.objects.filter(userid=userdata)
+        print(cart_items)
+        total_amount = 0
+        for i in cart_items:
+            total_amount += i.medicineid.price * i.quantity
+        print(total_amount)
+        context = {
+            'total_amount':total_amount
+        }
+        return render(request,'user/payment.html', context)
 
+def booking_confirm(request):
+    if 'id' in request.session:
+        userid = request.session['id']
+        user1 = Login.objects.get(id=userid)
+        userdata = user.objects.get(loginid=user1)
+        cart_items = cart.objects.filter(userid=userdata)
+        print(cart_items)
 
+        total_amount = 0
+        for item in cart_items:
+            total_amount += item.medicineid.price * item.quantity
+            # item.medicineid.quantity = item.medicineid.quantity - item.quantity
+
+            booking_entry = booking.objects.create(
+                cart_id=item,  
+                name=userdata,
+                medicinename=item.medicineid,
+                quantity=item.quantity,
+                total_amount=item.medicineid.price * item.quantity
+            )
+            print(booking_entry.name)
+            
+            booking_entry.save() 
+            booked_medicine = item.medicineid
+            booked_medicine.quantity -= item.quantity
+            booked_medicine.save()
+        cart_items.delete()
+        # print("Booking entries created successfully!")
+        return render(request, 'user/booksuccess.html', {'total_amount': total_amount})
+    else:
+        return redirect(log)
 
 def searchbar(request):
     if request.method=='GET':
         result=request.GET.get('search')
         if result:
-            products = product.objects.all().filter(medicinename=result)
+            products = product.objects.all().filter(medicinename__icontains=result)
             return render(request,'user/searchresult.html',{'products':products})
         else:
             print("no information to show")

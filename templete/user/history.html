@@ -9,10 +9,10 @@
     }
 
   table {
-	width:750px;
+	width:90%;
 	border-collapse: collapse;
 	margin-top: 90px;
-    margin-left: 19rem;
+  
 	}
 
 
@@ -143,21 +143,11 @@ only screen and (max-width: 760px),
         <li>
         <form action="{% url 'searchbar' %}" method="get">
             <div class="search">
-<!--		<div class="icon"></div>-->
-<!--          <div class="input">-->
-<!--			<input type="text"  name="search" placeholder="Search..." id="mysearch">-->
-<!--		</div>-->
 
-<!--		<span class="clear" onclick="document.getElementById('mysearch').value = ''">x</span>-->
 	</div>
         </li>
         </form>
-<!--        <li class="nav-item">-->
-<!--          <a class="nav-link" href="#">About</a>-->
-<!--        </li>-->
-<!--        <li class="nav-item">-->
-<!--          <a class="nav-link" href="#">Services</a>-->
-<!--        </li>-->
+
         <li class="nav-item">
           <a class="nav-link" href="logout"><img style="height:35px; margin-top:1px; margin-left:20rem;" src="{% static 'images/power.png' %}"></a></li>
 </a>
@@ -166,52 +156,20 @@ only screen and (max-width: 760px),
     </div>
   </div>
 </nav>
-<!-- <nav class="navbar navbar-expand-lg " style="background-color:#9FE2BF; HEIGHT: 83PX;"><P style=margin-left:px;"><img src="https://assets-global.website-files.com/6364b3839895890bb2c275a4/6364d6eaf534664ff26b5aa1_Nav-logo.svg" loading="lazy" alt="Nav Bar Brand Icon"></P>-->
 
-<!--  <div class="container-fluid" style="margin-left:370px; background-color:#9FE2BF;" >-->
-
-<!--&lt;!&ndash;    <a class="navbar-brand " style="margin-left:444px; " href="#">HOME</a>&ndash;&gt;-->
-<!--    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--      <span class="navbar-toggler-icon"></span>-->
-<!--    </button>-->
-
-<!--    <div class="collapse navbar-collapse" id="navbarText">-->
-<!--      <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
-<!--        <li class="nav-item">-->
-<!--          <a class="nav-link" aria-current="page" onclick="history.back()">HOME</a>-->
-<!--        </li>-->
-<!--        <li class="nav-item">-->
-<!--          <a class="nav-link active" href="">HISTORY</a>-->
-<!--        </li>-->
-<!--        <li class="nav-item">-->
-<!--          <a class="nav-link" href="{% url 'view_cart' %}">MY CART</a>-->
-<!--        </li>-->
-<!--        <li class="nav-item">-->
-<!--          <a class="nav-link" href="store">STORE</a>-->
-<!--        </li>-->
-<!--      </ul>-->
-
-<!--          <a class="nav-link" href="logout"><img   style="height:35px; margin-top:-10px; margin-left:3rem;" src="{% static 'images/power.png' %}"></a></li>-->
-<!--</a>-->
-
-<!--      <span class="navbar-text">-->
-
-<!--      </span>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</nav>-->
-<!--<div>-->
 <body style="background-color: white;
       background-image: radial-gradient(650px circle at 0% 0%,">
 <div>
 <!--<h1 class="history">MY HISTORY</h1>-->
 </div>
 
-<table>
+<table align="center">
   <thead>
     <tr>
       <th>Booking Date</th>
       <th>Medicine Name</th>
+      <th>Price</th>
+      <th>Quantity</th>
       <th>Total Amount</th>
       <th>Company</th>
       <th>Pharmacy</th>
@@ -223,6 +181,8 @@ only screen and (max-width: 760px),
       <tr>
         <td>{{i.date}}</td>
         <td>{{i.medicinename.medicinename}}</td>
+        <td>{{i.medicinename.price}}</td>
+        <td>{{i.quantity}}</td>
         <td>{{i.total_amount}}</td>
         <td>{{i.medicinename.company}}</td>
         <td>{{i.medicinename.pharmacyid.name}}</td>

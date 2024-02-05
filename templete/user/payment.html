@@ -1,8 +1,9 @@
-{% load static %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    {% load static %}
 </head>
 <style>
     * {
@@ -277,8 +278,7 @@ body{
 }
 </style>
 <body>
- <img  onclick="history.back()" style="height:3rem; margin-top:2px; margin-left:3rem ;" src="{% static 'images/previous.png' %}">
-
+ 
 <!-- Font Awesome Link -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
@@ -291,7 +291,7 @@ body{
 
           <!-- Full-width images with number and caption text -->
           <div class="productSlides fade" style="margin-top:140px; margin-left:50px;">
-           <img style="height:250px; " src="{{data.medicinename.image.url }}">
+           <img style="height:250px; " src="{% static 'images/payments.png' %}">
           </div>
 
 
@@ -305,15 +305,15 @@ body{
         </div>
         <div>
           <div>
-        <h1 class="product-name" style="margin-top:3rem;">
-          {{ data.medicinename.medicinename }}<br>
+        <!-- <h1 class="product-name" style="margin-top:3rem;">
+          {{ data.medicinename.medicinename }}<br> -->
           </div>
         </h1>
         <p class="product-code-name">
 <!--          Style ‎428027 K0LCN 8685-->
         </p>
         <p class="product-price">
-          ₹{{ data.total_amount }}
+          ₹{{ total_amount }}
         </p>
         </div>
       </div>
@@ -323,7 +323,7 @@ body{
     <div class="modal-info">
       <div class="info">
         <h2>Payment Information</h2>
-        <form action="{% url 'buymedicine' %}" method="post">
+        <form action="{% url 'booking_confirm' %}" method="post">
             {% csrf_token %}
           <ul class="form-list">
             <li class="form-list-row">
@@ -358,7 +358,7 @@ body{
               </div>
             </li>
           </ul>
-          <button>Pay Now</button>
+          <button type="submit">Pay Now</button></a>
         </form>
       </div>
     </div>
