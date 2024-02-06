@@ -232,8 +232,25 @@ def editpharmacyprofile(request):
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def phar_history(request):
-    data5=booking.objects.all()
-    return render(request,'pharmacy/history.html',{'result':data5})
+    if 'id' in request.session:
+        id =request.session['id']
+        data=Login.objects.get(id=id)
+        userdata=Pharmacy.objects.get(loginid=data)
+        data5=booking.objects.filter(medicinename__pharmacyid=userdata)
+        items_per_page = 10
+        # Use Paginator to paginate the products
+        paginator = Paginator(data5, items_per_page)
+        page = request.GET.get('page', 1)
+
+        try:
+            bookings = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver the first page
+            bookings = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver the last page of results
+            bookings = paginator.page(paginator.num_pages)
+    return render(request,'pharmacy/history.html',{'result':bookings})
 
 
 
@@ -289,7 +306,7 @@ def editprofile(request):
 
             userdata.name = newname
             userdata.email = newemail
-            userdata.adress = newaddres
+            userdata.address = newaddres
             userdata.phone_no = newphone_no
             data.username= newname
             userdata.save()
@@ -339,8 +356,7 @@ def book(request,id):
 
 def succsess(request):
     return render(request,'user/booksuccess.html')
-def already(request):
-    return render(request,'user/alreadybooked.html')
+
 
 
 def buymedicine(request):
@@ -386,8 +402,7 @@ def cartdelete(request,id):
         return redirect(log)
 
 
-def alreadycart(request):
-    return render(request,'user/cartalready.html')
+
 
 def history (request):
     if 'id' in request.session:
@@ -395,8 +410,21 @@ def history (request):
         user1=Login.objects.get(id=useid)
         userdata=user.objects.get(loginid=user1)
         history=booking.objects.filter(name=userdata)
-        print(history)
-        return render(request, 'user/history.html', {'hist': history})
+        items_per_page = 5
+
+        # Use Paginator to paginate the products
+        paginator = Paginator(history, items_per_page)
+        page = request.GET.get('page', 1)
+
+        try:
+            bookings = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver the first page
+            bookings = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver the last page of results
+            bookings = paginator.page(paginator.num_pages)
+        return render(request, 'user/history.html', {'hist': bookings})
     else:
         return redirect(log)
 
