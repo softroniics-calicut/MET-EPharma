@@ -4,12 +4,10 @@ from .models import user,product,booking,cart,Login
 from django.shortcuts import HttpResponse
 from django.shortcuts import reverse
 from django.contrib.auth import authenticate,login
-from .forms import editprofileform
-from .forms import pharmacyprofileform
 from .forms import editproductform
 from django.views.decorators.cache import cache_control
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from django.db.models import Q
 
 # from django.contrib.auth import update_session_auth_hash
 
@@ -490,7 +488,10 @@ def searchbar(request):
     if request.method=='GET':
         result=request.GET.get('search')
         if result:
-            products = product.objects.all().filter(medicinename__icontains=result)
+            products = product.objects.filter(
+                Q(medicinename__icontains=result) |
+                Q(pharmacyid__address__icontains=result)
+            )
             return render(request,'user/searchresult.html',{'products':products})
         else:
             print("no information to show")
