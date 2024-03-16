@@ -140,7 +140,8 @@ def addproduct(request):
             quantity = stock,
             price=price,
             company=company,
-            type=type
+            type=type,
+            
             )
         data.save()
         return redirect(viewproduct)

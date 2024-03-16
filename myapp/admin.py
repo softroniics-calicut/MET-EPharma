@@ -24,11 +24,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('pharmacyid', 'type')
     readonly_fields = ('pharmacyid', 'medicinename', 'price', 'company', 'type', 'quantity')
 
-class CartAdmin(admin.ModelAdmin):
-    list_display = ('medicineid', 'userid', 'quantity')
-    search_fields = ('medicineid__medicinename', 'userid__name')
-    list_filter = ('userid__loginid__status',)
-    readonly_fields = ('medicineid', 'userid', 'quantity')  
+
 
 class BookingAdmin(admin.ModelAdmin):
 
@@ -52,7 +48,6 @@ admin.site.register(Login, LoginAdmin)
 admin.site.register(Pharmacy, PharmacyAdmin)
 admin.site.register(user, UserAdmin)
 admin.site.register(product, ProductAdmin)
-admin.site.register(cart, CartAdmin)
 admin.site.register(booking, BookingAdmin)
 
 admin.site.unregister(Group)
