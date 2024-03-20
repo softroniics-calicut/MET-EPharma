@@ -23,6 +23,7 @@ class Pharmacy (models.Model):
     email=models.CharField(max_length=20)
     address=models.CharField(max_length=20)
     phone_no=models.IntegerField()
+    licence = models.FileField()
 
     def __str__(self):
         return self.name
@@ -35,7 +36,7 @@ class user(models.Model):
     phone_no=models.IntegerField()
 
     def __str__(self):
-        return self.name
+        return self.name                        
 
 
 class product(models.Model):
@@ -46,6 +47,7 @@ class product(models.Model):
     company=models.CharField(max_length=20)
     type=models.CharField(max_length=10)
     quantity=models.IntegerField()
+    prescription_required = models.CharField(max_length=20, default='False') 
 
 
     def __str__(self):
@@ -59,6 +61,10 @@ class cart(models.Model):
     def __str__(self):
         return self.medicineid.medicinename
 
+class Prescription(models.Model):
+    file = models.FileField()
+    medicine_id = models.ForeignKey(product,on_delete=models.CASCADE)
+
 class booking(models.Model):
     cart_id = models.ForeignKey(cart,on_delete=models.SET_NULL, null=True)
     name=models.ForeignKey(user,on_delete=models.CASCADE)
@@ -66,6 +72,7 @@ class booking(models.Model):
     date=models.DateField(auto_now=True,blank=True)
     quantity=models.IntegerField(null=True, blank=True)
     total_amount=models.IntegerField(null=True, blank=True)
+    prescription_id = models.ForeignKey(Prescription,on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.medicinename.medicinename

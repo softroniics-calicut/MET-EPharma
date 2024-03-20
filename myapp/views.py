@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import Pharmacy
-from .models import user,product,booking,cart,Login
+from .models import user,product,booking,cart,Login, Prescription
 from django.shortcuts import HttpResponse
 from django.shortcuts import reverse
 from django.contrib.auth import authenticate,login
@@ -8,7 +8,7 @@ from .forms import editproductform
 from django.views.decorators.cache import cache_control
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-
+from django.core.exceptions import MultipleObjectsReturned
 # from django.contrib.auth import update_session_auth_hash
 
 # Create your views here.
@@ -133,6 +133,11 @@ def addproduct(request):
         price=request.POST['price']
         company=request.POST['company']
         type=request.POST['type']
+        if 'prescription' in request.POST :
+            prescription = request.POST['prescription']
+        # Convert prescription value to boolean
+        else :
+            prescription='False'
         data=product.objects.create(
             pharmacyid=userdata,
             image=image,
@@ -141,7 +146,7 @@ def addproduct(request):
             price=price,
             company=company,
             type=type,
-            
+            prescription_required=prescription
             )
         data.save()
         return redirect(viewproduct)
@@ -321,7 +326,34 @@ def editprofile(request):
 def home(request):
         return render(request,'user/userhome.html')
 
+def view_pharmacy(request):
+    pharmacy_data = Pharmacy.objects.all()
+    items_per_page = 5
 
+    # Use Paginator to paginate the products
+    paginator = Paginator(pharmacy_data, items_per_page)
+    page = request.GET.get('page', 1)
+
+    try:
+        pharmacy = paginator.page(page)
+    except PageNotAnInteger:
+
+        pharmacy = paginator.page(1)
+    except EmptyPage:
+
+        pharmacy = paginator.page(paginator.num_pages)
+    return render(request, 'user/pharmacy.html', {'pharmacy':pharmacy})
+
+def pharmacy_search(request):
+        if request.method=='GET':
+            result=request.GET.get('search')
+            if result:
+                pharmacy = Pharmacy.objects.filter(
+                    Q(name__icontains=result) |
+                    Q(address__icontains=result)
+                )
+                return render(request,'user/pharmacy.html',{'pharmacy':pharmacy})
+           
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def store(request):
     data = product.objects.all()
@@ -340,6 +372,39 @@ def store(request):
         # If page is out of range (e.g. 9999), deliver the last page of results
         products = paginator.page(paginator.num_pages)
     return render(request, 'user/store.html', {'products':products})
+
+def prescription(request,id):
+    if 'id' in request.session:
+        useid=request.session['id']
+        user2=Login.objects.get(id=useid)
+        userdata=user.objects.get(loginid=user2)
+        product_data=product.objects.get(id=id)
+        if request.method == 'POST':
+            prescription = request.FILES['prescription']
+            data = Prescription.objects.create(file=prescription, medicine_id=product_data)
+            data.save()
+            quantity_range = range(1, 11)
+            requested_quantity = int(request.POST['quantity'])
+            if requested_quantity > product_data.quantity:
+                context = {
+                    'message': "Out Of Stock",
+                    'quantity_range':quantity_range,
+                    'medicine': product_data
+                }
+                return render(request, 'user/book.html', context)
+
+            # Check if the medicine is already in the cart
+            if cart.objects.filter(medicineid=product_data, userid=userdata).exists():
+                return redirect(alreadycart)
+            else:
+                # Add the medicine to the cart
+                data = cart.objects.create(userid=userdata, medicineid=product_data, quantity=requested_quantity)
+                data.save()
+
+                return redirect(view_cart)
+    else:
+        return redirect(log)
+
 
 def book(request,id):
     if 'id' in request.session:
@@ -361,17 +426,22 @@ def succsess(request):
 def buymedicine(request):
     return render(request,'user/booksuccess.html')
 
+def alreadycart(request):
+    return render(request, 'user/cartalready.html')
+
 def Add_cart (request,id):
     if 'id' in request.session:
         useid=request.session['id']
         user2=Login.objects.get(id=useid)
         userdata=user.objects.get(loginid=user2)
         medicine=product.objects.get(id=id)
+        quantity_range = range(1, 11)
         # Check if the requested quantity is greater than the available quantity
         requested_quantity = int(request.POST['quantity'])
         if requested_quantity > medicine.quantity:
             context = {
                 'message': "Out Of Stock",
+                'quantity_range':quantity_range,
                 'medicine': medicine
             }
             return render(request, 'user/book.html', context)
@@ -443,7 +513,6 @@ def payment(request):
         user1 =Login.objects.get(id=userid)
         userdata=user.objects.get(loginid=user1)
         cart_items = cart.objects.filter(userid=userdata)
-        print(cart_items)
         total_amount = 0
         for i in cart_items:
             total_amount += i.medicineid.price * i.quantity
@@ -459,19 +528,28 @@ def booking_confirm(request):
         user1 = Login.objects.get(id=userid)
         userdata = user.objects.get(loginid=user1)
         cart_items = cart.objects.filter(userid=userdata)
-        print(cart_items)
 
         total_amount = 0
         for item in cart_items:
             total_amount += item.medicineid.price * item.quantity
-            # item.medicineid.quantity = item.medicineid.quantity - item.quantity
 
+            # Check if a prescription exists for the current item's medicine
+            try:
+                prescription = Prescription.objects.get(medicine_id=item.medicineid)
+            except Prescription.DoesNotExist:
+                prescription = None
+            except MultipleObjectsReturned:
+    # Handle multiple prescriptions for the same medicine
+                prescriptions = Prescription.objects.filter(medicine_id=item.medicineid)
+    # You may need additional logic here to decide which prescription to use
+                prescription = prescriptions.first() 
             booking_entry = booking.objects.create(
                 cart_id=item,  
                 name=userdata,
                 medicinename=item.medicineid,
                 quantity=item.quantity,
-                total_amount=item.medicineid.price * item.quantity
+                total_amount=item.medicineid.price * item.quantity,
+                prescription_id=prescription if prescription else None
             )
             print(booking_entry.name)
             
@@ -479,11 +557,13 @@ def booking_confirm(request):
             booked_medicine = item.medicineid
             booked_medicine.quantity -= item.quantity
             booked_medicine.save()
+        
         cart_items.delete()
-        # print("Booking entries created successfully!")
+        
         return render(request, 'user/booksuccess.html', {'total_amount': total_amount})
     else:
         return redirect(log)
+
 
 def searchbar(request):
     if request.method=='GET':

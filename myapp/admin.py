@@ -1,8 +1,9 @@
 from django.contrib import admin
 from .models import Pharmacy
-from.models import user,product,booking,cart,Login
+from.models import user,product,booking,Login, Prescription
 from django.contrib.auth.models import Group, User
 # Register your models here.
+admin.site.register(Prescription)
 
 class LoginAdmin(admin.ModelAdmin):
     list_display = ('username', 'status', 'type')
@@ -19,7 +20,7 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ('name', 'email')
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('pharmacyid', 'medicinename', 'price', 'company', 'type', 'quantity')
+    list_display = ('medicinename','pharmacyid', 'price', 'company', 'type', 'quantity')
     search_fields = ('medicinename', 'company')
     list_filter = ('pharmacyid', 'type')
     readonly_fields = ('pharmacyid', 'medicinename', 'price', 'company', 'type', 'quantity')

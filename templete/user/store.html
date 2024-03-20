@@ -269,6 +269,9 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'history'  %}">HISTORY</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'view_pharmacy'  %}">PHARMACY</a>
+          </li>
         </ul>
       </div>
       <!-- Navbar links -->
@@ -284,8 +287,8 @@
 
                 <span class="clear" onclick="document.getElementById('mysearch').value = ''">x</span>
               </div>
+              </form>
           </li>
-          </form>
           <li class="nav-item">
             <a class="nav-link" href="logout"><img style="height:35px; margin-top:1px; margin-left:3rem;"
                 src="{% static 'images/power.png' %}"></a>
@@ -308,29 +311,29 @@
       <a href="{% url 'book' id=i.id %}"><button class="add-to-cart-button">Book</button></a>
     </div>
     {% endfor %}
-    
+
   </div>
-<!-- Pagination links -->
-<div class="pagination mt-3 d-flex justify-content-end pe-5 mb-4  fw-bold text-white text-end ">
-  <span class="step-links  ">
+  <!-- Pagination links -->
+  <div class="pagination mt-3 d-flex justify-content-end pe-5 mb-4  fw-bold text-white text-end ">
+    <span class="step-links  ">
       {% if products.has_previous %}
-          <a class="btn btn-dark" href="?page=1">&laquo; first</a>
-          <a class="btn btn-dark" href="?page={{ products.previous_page_number }}">previous</a>
+      <a class="btn btn-dark" href="?page=1">&laquo; first</a>
+      <a class="btn btn-dark" href="?page={{ products.previous_page_number }}">previous</a>
       {% endif %}
       {% if products.has_next %}
 
       <!-- <a href="?page={{ products.paginator.num_pages }}" class="text-decoration-none text-white btn btn-dark ">last &raquo;</a> -->
-    {% endif %}
+      {% endif %}
       <span class="current text-dark">
-          Page {{ products.number }} of {{ products.paginator.num_pages }}.
+        Page {{ products.number }} of {{ products.paginator.num_pages }}.
       </span>
 
       {% if products.has_next %}
 
-        <a href="?page={{ products.next_page_number }}" class="text-decoration-none text-white btn btn-dark ">next</a>
+      <a href="?page={{ products.next_page_number }}" class="text-decoration-none text-white btn btn-dark ">next</a>
       {% endif %}
-  </span>
-</div>
+    </span>
+  </div>
 
   <script>
     const icon = document.querySelector(".icon");

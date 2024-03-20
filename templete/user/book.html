@@ -165,16 +165,30 @@ tableContainer .searchButton:hover {
                             </div>
 
                             </div>
-                            <form action="{% url 'cart' id=medicine.id %}" method="post" style="display: flex; gap: 20px; align-items: center;">
-                                {% csrf_token %}
-                                <select name="quantity" id="quantity">
-                                    {% for i in quantity_range %}
-                                        <option value="{{ i }}">{{ i }}</option>
-                                    {% endfor %}
-                                </select>
-                                <input type="submit" class="man" value="Add to Cart">
-                            </form>
-                            
+                            {% if medicine.prescription_required == "True" %}
+                                
+                                <form method="post" action="{% url 'prescription' id=medicine.id %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <label>upload prescription</label>
+                                    <input type="file" name="prescription" required>
+                                    <select name="quantity" id="quantity">
+                                        {% for i in quantity_range %}
+                                            <option value="{{ i }}">{{ i }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <input type="submit" class="man" value="Add to Cart">                   
+                                </form>
+                            {% else %}
+                                <form action="{% url 'cart' id=medicine.id %}" method="post" style="display: flex; gap: 20px; align-items: center;">
+                                    {% csrf_token %}
+                                    <select name="quantity" id="quantity">
+                                        {% for i in quantity_range %}
+                                            <option value="{{ i }}">{{ i }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <input type="submit" class="man" value="Add to Cart">
+                                </form>
+                            {% endif %}
                             
                     </div>
                     

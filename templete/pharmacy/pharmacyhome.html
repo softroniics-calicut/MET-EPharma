@@ -4,12 +4,14 @@
 
 <head>
   <title>Pharma &mdash; Colorlib Template</title>
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"
-  <link href="https://fonts.googleapis.com/css?family=Rubik:400,700|Crimson+Text:400,400i" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" <link
+    href="https://fonts.googleapis.com/css?family=Rubik:400,700|Crimson+Text:400,400i" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'fonts/icomoon/style.css' %}">
 
   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
@@ -25,12 +27,16 @@
 
 </head>
 <STYLE>
-.blue{
- color: #DC143C; }
-.yellow{
- color: #20B2AA }
+  .blue {
+    color: #DC143C;
+  }
+
+  .yellow {
+    color: #20B2AA
+  }
 </STYLE>
- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
 <body>
   <div class="site-wrap">
@@ -48,8 +54,10 @@
         <div class="d-flex align-items-center justify-content-between">
           <div class="logo">
             <div class="site-logo">
-           
-  <h2><img src="https://assets-global.website-files.com/6364b3839895890bb2c275a4/6364d6eaf534664ff26b5aa1_Nav-logo.svg"></h2>
+
+              <h2><img
+                  src="https://assets-global.website-files.com/6364b3839895890bb2c275a4/6364d6eaf534664ff26b5aa1_Nav-logo.svg">
+              </h2>
             </div>
           </div>
           <div class="main-nav d-none d-lg-block">
@@ -63,13 +71,14 @@
 
                 <li class="has-children">
                   <a data-bs-toggle="modal" data-bs-target="#Modal">add product </a>
+                </li> 
 
-                  <li ><a href="{% url 'editpharmacyprofile'  %}">Edit profile</a></li>
-                  <li ><a href="phar_history">history</a></li>
+                <li><a href="{% url 'editpharmacyprofile'  %}">Edit profile</a></li>
+                <li><a href="phar_history">history</a></li>
 
 
-                  </ul>
-                </li>
+              </ul>
+              </li>
 
               </ul>
             </nav>
@@ -81,11 +90,11 @@
 
 
 
-           <div class="icons">
+          <div class="icons">
 
-              
-              <a href="logout"><i class="fa fa-sign-out"></i> <button class="btn btn-success ">logout</button></a>
-              
+
+            <a href="logout"><i class="fa fa-sign-out"></i> <button class="btn btn-success ">logout</button></a>
+
             </a>
             <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none"><span
                 class="icon-menu"></span></a>
@@ -102,8 +111,8 @@
               <h2 class="sub-title">Effective Medicine, New Medicine Everyday</h2>
               <h1>{{data3.username}}</h1>
               <p>
-<!--                <a href="#" class="btn btn-primary px-5 py-3">ADD PRODUCTS</a>-->
-<!--              </p>-->
+                <!--                <a href="#" class="btn btn-primary px-5 py-3">ADD PRODUCTS</a>-->
+                <!--              </p>-->
             </div>
           </div>
         </div>
@@ -112,76 +121,82 @@
 
 
 
-<!--  modal-->
-  <div class="modal fade" id="Modal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-        <!-- Login Form -->
-        <form action="addproduct" method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="modal-header">
-            <h5 class="modal-title">Add Medicine Form</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-                <label for="name">Medicine<span class="text-danger"></span></label>
-                <input type="text" name="medicinename" class="form-control"  placeholder="Enter Medicine" required="">
+    <!--  modal-->
+    <div class="modal fade" id="Modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Login Form -->
+          <form action="addproduct" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-header">
+              <h5 class="modal-title">Add Medicine Form</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-          </div>
-               <div class="modal-body">
-            <div class="mb-3">
-                <label for="price">Medicine price<span class="text-danger"></span></label>
-                <input type="number" name="price" class="form-control"  placeholder="medicine price" required="">
-            </div>
-               </div>
             <div class="modal-body">
-              <div class="mb-3">
-                  <label for="price">Stock<span class="text-danger"></span></label>
-                  <input type="number" name="stock" class="form-control"  placeholder="Add quantity" required="">
+              <div class="">
+                <label for="name">Medicine<span class="text-danger"></span></label>
+                <input type="text" name="medicinename" class="form-control" placeholder="Enter Medicine" required="">
               </div>
             </div>
             <div class="modal-body">
-            <div class="mb-3">
+              <div class="">
+                <label for="price">Medicine price<span class="text-danger"></span></label>
+                <input type="number" name="price" class="form-control" placeholder="medicine price" required="">
+              </div>
+            </div>
+            <div class="modal-body">
+              <div class="">
+                <label for="price">Stock<span class="text-danger"></span></label>
+                <input type="number" name="stock" class="form-control" placeholder="Add quantity" required="">
+              </div>
+            </div>
+            <div class="modal-body">
+              <div class="">
                 <label for="image">Medicine image<span class="text-danger"></span></label>
-                <input type="file" name="image" class="form-control"  placeholder="upload image" required="">
-            </div>
+                <input type="file" name="image" class="form-control" placeholder="upload image" required="">
+              </div>
             </div>
 
-          <div class="modal-body">
-            <div class="mb-3">
+            <div class="modal-body">
+              <div class="">
                 <label for="type">Type<span class="text-danger"></span></label>
-                <input type="text" name="type" class="form-control"  placeholder="medicine type" required="">
+                <input type="text" name="type" class="form-control" placeholder="medicine type" required="">
+              </div>
             </div>
-               </div>
-          <div class="modal-body">
-            <div class="mb-3">
+            <div class="modal-body">
+              <div class="">
                 <label for="company">Company<span class="text-danger"></span></label>
-                <input type="text" name="company" class="form-control"  placeholder="company" required="">
+                <input type="text" name="company" class="form-control" placeholder="company" required="">
+              </div>
             </div>
-               </div>
-          <div class="modal-footer pt-4">
-            <button type="submit" class="btn btn-dark mx-auto w-50">Add Product</button>
-          </div>
-        </form>
+            <div class="modal-body">
+              <input type="checkbox" name="prescription" value="True">
+              <label for="prescriptionCheckbox">Need prescription for this medicine</label><br>
+            </div>
+            <div class="modal-footer pt-4">
+              <button type="submit" class="btn btn-dark mx-auto w-50">Add Product</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-  </div>
-  </div>
+ 
 
 
+    <!-- end modal -->
 
-<!-- end modal -->
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/aos.js' %}"></script>
 
-  <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
-  <script src="{% static 'js/jquery-ui.js' %}"></script>
-  <script src="{% static 'js/popper.min.js' %}"></script>
-  <script src="{% static 'js/bootstrap.min.js' %}"></script>
-  <script src="{% static 'js/owl.carousel.min.js' %}"></script>
-  <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
-  <script src="{% static 'js/aos.js' %}"></script>
-
-  <script src="{% static 'js/main.js' %}"></script>
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"></script>
 </body>
 
 </html>
