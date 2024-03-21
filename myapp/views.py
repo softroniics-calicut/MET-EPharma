@@ -240,7 +240,7 @@ def phar_history(request):
         id =request.session['id']
         data=Login.objects.get(id=id)
         userdata=Pharmacy.objects.get(loginid=data)
-        data5=booking.objects.filter(medicinename__pharmacyid=userdata)
+        data5=booking.objects.filter(medicinename__pharmacyid=userdata).order_by('-id')
         items_per_page = 10
         # Use Paginator to paginate the products
         paginator = Paginator(data5, items_per_page)
